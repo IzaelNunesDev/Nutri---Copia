@@ -1,7 +1,16 @@
 import axios from 'axios';
 
+// Helper to ensure URL has protocol
+const getBaseUrl = () => {
+    let url = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    if (!url.startsWith('http')) {
+        url = `https://${url}`;
+    }
+    return url;
+};
+
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8000',
+    baseURL: getBaseUrl(),
 });
 
 // Add a request interceptor to add the auth token to requests

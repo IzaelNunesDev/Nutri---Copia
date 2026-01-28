@@ -32,19 +32,21 @@ cors_origins = [
     "http://localhost:3000",
 ]
 
+# Cors configuration
+from app.config import settings
+
 # Adicionar origens via variável de ambiente (separadas por vírgula)
-allowed_origins_env = os.getenv("ALLOWED_ORIGINS")
-if allowed_origins_env:
+allowed_origins_env = settings.ALLOWED_ORIGINS
+if allowed_origins_env and allowed_origins_env != "http://localhost:5173":
     cors_origins.extend([origin.strip() for origin in allowed_origins_env.split(",")])
 
 # Adicionar frontend URL específica se definida
-frontend_url = os.getenv("FRONTEND_URL")
-if frontend_url:
-    cors_origins.append(frontend_url)
+if settings.frontend_url_parsed:
+    cors_origins.append(settings.frontend_url_parsed)
 
 # Permitir todas as origens se não estiver em produção estrita
 # (Útil para testes, mas idealmente deve ser restrito em produção)
-if os.getenv("ENVIRONMENT") != "production" and not allowed_origins_env and not frontend_url:
+if settings.ENVIRONMENT != "production" and not allowed_origins_env and not settings.frontend_url_parsed:
     cors_origins = ["*"]
 
 app.add_middleware(

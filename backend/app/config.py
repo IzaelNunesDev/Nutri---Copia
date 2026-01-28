@@ -35,5 +35,13 @@ class Settings(BaseSettings):
         "extra": "ignore"
     }
 
+    @property
+    def frontend_url_parsed(self) -> str:
+        """Ensure FRONTEND_URL has protocol"""
+        url = self.FRONTEND_URL
+        if url and not url.startswith("http"):
+            return f"https://{url}"
+        return url
+
 settings = Settings()
 

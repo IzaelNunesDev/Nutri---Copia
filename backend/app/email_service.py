@@ -37,7 +37,7 @@ def send_password_reset_email(to_email: str, reset_token: str) -> bool:
         logger.warning("Email service not configured. Cannot send password reset email.")
         return False
     
-    reset_link = f"{settings.FRONTEND_URL}/reset-password?token={reset_token}"
+    reset_link = f"{settings.frontend_url_parsed}/reset-password?token={reset_token}"
     
     # Create HTML email content
     html_content = f"""
