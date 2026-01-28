@@ -1,0 +1,51 @@
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+# Credentials and sensitive files
+credentials.json
+*.key
+*.pem
+*.p12
+*.pfx
+*.keystore
+*.jks
+
+# Dependencies
+node_modules/
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+server_log.txt
+
+# Build output
+dist/
+build/
+.next/
+
+# OS files
+Thumbs.db
+.DS_Store
+
+# Virtual environments
+venv/
+env/
+ENV/
+node_modules
