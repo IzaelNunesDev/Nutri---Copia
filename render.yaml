@@ -14,7 +14,10 @@ services:
         value: nosniff
     envVars:
       - key: VITE_API_URL
-        value: https://nutri-backend-7ifj.onrender.com
+        fromService:
+          type: web
+          name: nutri-backend
+          property: url
 
   # Backend Service
   - type: web
@@ -25,6 +28,11 @@ services:
     startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
     healthCheckPath: /health
     envVars:
+      - key: FRONTEND_URL
+        fromService:
+          type: web
+          name: nutri-frontend
+          property: url
       - key: MONGODB_URL
         sync: false
       - key: DATABASE_NAME
@@ -35,3 +43,13 @@ services:
         value: 3.11.0
       - key: SECRET_KEY
         generateValue: true
+      - key: SMTP_HOST
+        sync: false
+      - key: SMTP_PORT
+        value: 587
+      - key: SMTP_USER
+        sync: false
+      - key: SMTP_PASSWORD
+        sync: false
+      - key: SMTP_FROM_EMAIL
+        sync: false

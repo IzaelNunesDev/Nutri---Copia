@@ -30,15 +30,21 @@ import os
 cors_origins = [
     "http://localhost:5173",
     "http://localhost:3000",
-    "https://nutri-frontend.onrender.com",
 ]
 
-# Em produção, você pode adicionar o domínio do frontend:
-# cors_origins.append("https://seu-frontend.onrender.com")
+# Adicionar origens via variável de ambiente (separadas por vírgula)
+allowed_origins_env = os.getenv("ALLOWED_ORIGINS")
+if allowed_origins_env:
+    cors_origins.extend([origin.strip() for origin in allowed_origins_env.split(",")])
+
+# Adicionar frontend URL específica se definida
+frontend_url = os.getenv("FRONTEND_URL")
+if frontend_url:
+    cors_origins.append(frontend_url)
 
 # Permitir todas as origens se não estiver em produção estrita
-# (REMOVER EM PRODUÇÃO E CONFIGURAR DOMÍNIOS ESPECÍFICOS)
-if os.getenv("ENVIRONMENT") != "production":
+# (Útil para testes, mas idealmente deve ser restrito em produção)
+if os.getenv("ENVIRONMENT") != "production" and not allowed_origins_env and not frontend_url:
     cors_origins = ["*"]
 
 app.add_middleware(
