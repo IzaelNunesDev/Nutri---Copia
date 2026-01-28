@@ -16,7 +16,7 @@ import {
   evaluateWeightGainStatus
 } from '../../utils/nutritionConstants';
 
-import type { FeedbackItem } from '../../components/pdf/PatientGuidelinesDocument';
+import type { FeedbackItem } from '../../utils/rules/types';
 
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, ReferenceLine } from 'recharts';
 
@@ -599,15 +599,13 @@ export default function PatientProfile() {
         </div>
 
         <div className="flex items-center gap-2">
-          {!showReport && (
-            <button
-              onClick={handleDeletePatient}
-              className="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors border border-red-200"
-              title="Excluir Paciente"
-            >
-              <i className="ri-delete-bin-line text-lg"></i>
-            </button>
-          )}
+          <button
+            onClick={handleDeletePatient}
+            className="flex items-center justify-center w-10 h-10 bg-red-50 text-red-600 rounded-xl hover:bg-red-100 transition-colors border border-red-200"
+            title="Excluir Paciente"
+          >
+            <i className="ri-delete-bin-line text-lg"></i>
+          </button>
 
           <button
             onClick={() => navigate('/checklist', { state: { patientId: id } })}

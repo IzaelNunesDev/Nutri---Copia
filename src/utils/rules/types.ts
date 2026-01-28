@@ -9,7 +9,7 @@ export interface FeedbackItem {
     patientMessage?: string;
     type: FeedbackType;
     audience: AudienceType;
-    priority: number;
+    priority?: number;
     note?: string;
     requiresInput?: boolean;
     inputFields?: string[];
