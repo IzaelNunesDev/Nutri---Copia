@@ -129,13 +129,16 @@ export default function Home() {
             </p>
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
               <span className="px-3 py-1 bg-blue-50 text-blue-600 rounded-full text-xs font-medium">
-                <i className="ri-check-line mr-1"></i>FIGO Guidelines
+                <i className="ri-check-line mr-1"></i>FIGO
+              </span>
+              <span className="px-3 py-1 bg-indigo-50 text-indigo-600 rounded-full text-xs font-medium">
+                <i className="ri-check-line mr-1"></i>Ministério da Saúde
               </span>
               <span className="px-3 py-1 bg-green-50 text-green-600 rounded-full text-xs font-medium">
                 <i className="ri-check-line mr-1"></i>Caderneta da Gestante
               </span>
               <span className="px-3 py-1 bg-purple-50 text-purple-600 rounded-full text-xs font-medium">
-                <i className="ri-check-line mr-1"></i>Atualizado 2024
+                <i className="ri-check-line mr-1"></i>Atualizado 2025
               </span>
             </div>
           </div>

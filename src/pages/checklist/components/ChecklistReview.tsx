@@ -1,5 +1,5 @@
-import { Dispatch, SetStateAction } from 'react';
-import { FeedbackItem } from '../../../utils/rules/types';
+import { type Dispatch, type SetStateAction } from 'react';
+import type { FeedbackItem } from '../../../utils/rules/types';
 
 interface ChecklistReviewProps {
     activeAlerts: FeedbackItem[];
@@ -162,7 +162,7 @@ export const ChecklistReview = ({
                         }
 
                         const isSelected = selectedGuidelines[activeItem!.id]?.selected;
-                        const editedText = editedMessages[activeItem!.id] ?? activeItem!.message;
+
 
                         return (
                             <div className="p-6 h-full flex flex-col animate-fade-in">
@@ -180,37 +180,18 @@ export const ChecklistReview = ({
                                     </button>
                                 </div>
                                 <div className="flex-1 flex flex-col gap-4">
-                                    <div className="flex items-center justify-between">
-                                        <div className="flex bg-gray-100 p-1 rounded-lg">
-                                            <button
-                                                onClick={() => { const newMap = { ...editedMessages }; delete newMap[activeItem!.id]; setEditedMessages(newMap); }}
-                                                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${!editedMessages[activeItem!.id] ? 'bg-white text-purple-600 shadow-sm' : 'text-gray-600 hover:text-gray-800'}`}
-                                            >
-                                                <i className="ri-stethoscope-line mr-1"></i> Profissional
-                                            </button>
-                                            <button
-                                                onClick={() => { if (!editedMessages[activeItem!.id]) { const textToUse = activeItem!.patientMessage || activeItem!.message; setEditedMessages(prev => ({ ...prev, [activeItem!.id]: textToUse })); } }}
-                                                className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${editedMessages[activeItem!.id] ? 'bg-white text-blue-600 shadow-sm' : 'text-gray-600 hover:text-gray-800'}`}
-                                            >
-                                                <i className="ri-user-heart-line mr-1"></i> Paciente
-                                            </button>
-                                        </div>
-                                    </div>
                                     <div className="flex-1 relative">
-                                        {!editedMessages[activeItem!.id] ? (
-                                            <div className="h-full">
-                                                <label className="block text-sm font-medium text-purple-600 mb-2"><i className="ri-stethoscope-line mr-1"></i> Texto Técnico (Original)</label>
-                                                <div className="w-full h-[calc(100%-3rem)] p-4 rounded-xl border-2 border-purple-200 bg-purple-50/30 text-gray-700 leading-relaxed overflow-y-auto whitespace-pre-line">{activeItem!.message}</div>
-                                            </div>
-                                        ) : (
-                                            <div className="h-full">
-                                                <label className="block text-sm font-medium text-blue-600 mb-2 flex justify-between">
-                                                    <span><i className="ri-user-heart-line mr-1"></i> Texto Adaptado para Paciente</span>
-                                                    <button onClick={() => { const newMap = { ...editedMessages }; delete newMap[activeItem!.id]; setEditedMessages(newMap); }} className="text-xs text-purple-600 hover:underline"><i className="ri-arrow-go-back-line mr-1"></i> Ver Original</button>
-                                                </label>
-                                                <textarea value={editedText} onChange={(e) => setEditedMessages(prev => ({ ...prev, [activeItem!.id]: e.target.value }))} className={`w-full h-[calc(100%-3rem)] p-4 rounded-xl border-2 text-base leading-relaxed transition-all focus:ring-4 ${isSelected ? 'border-blue-300 focus:border-blue-500 bg-blue-50/20' : 'border-gray-200 bg-gray-50'}`} placeholder="Adapte o texto..." />
-                                            </div>
-                                        )}
+                                        <div className="h-full">
+                                            <label className="block text-sm font-medium text-blue-600 mb-2">
+                                                <i className="ri-user-heart-line mr-1"></i> Texto para o Paciente
+                                            </label>
+                                            <textarea
+                                                value={editedMessages[activeItem!.id] ?? activeItem!.patientMessage ?? activeItem!.message}
+                                                onChange={(e) => setEditedMessages(prev => ({ ...prev, [activeItem!.id]: e.target.value }))}
+                                                className={`w-full h-[calc(100%-3rem)] p-4 rounded-xl border-2 text-base leading-relaxed transition-all focus:ring-4 ${isSelected ? 'border-blue-300 focus:border-blue-500 bg-blue-50/20' : 'border-gray-200 bg-gray-50'}`}
+                                                placeholder="Edite o texto para o paciente..."
+                                            />
+                                        </div>
                                     </div>
                                     {isSelected && (
                                         <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200">

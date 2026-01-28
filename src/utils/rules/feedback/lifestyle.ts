@@ -1,5 +1,5 @@
 import { FEEDBACK_CONTENT } from '../constants';
-import { FeedbackItem, FeedbackType } from '../types';
+import type { FeedbackItem, FeedbackType } from '../types';
 
 export const getSunExposureFeedback = (
     response: 'Sim' | 'Não' | 'Não sei' | null
@@ -12,10 +12,23 @@ export const getSunExposureFeedback = (
             id: 'sun_exposure_low',
             title: item.title,
             message: item.content,
+            patientMessage: item.content,
             type: item.type as FeedbackType,
-            audience: 'both',
+            audience: 'patient',
             priority: 7
         });
+
+        if ((item as any).professionalContent) {
+            feedback.push({
+                id: 'sun_exposure_prof',
+                title: `ALERTA CLÍNICO: ${item.title}`,
+                message: (item as any).professionalContent,
+                type: 'clinical',
+                audience: 'professional',
+                priority: 7
+            });
+        }
+
     } else if (response === 'Não sei') {
         feedback.push({
             id: 'sun_exposure_investigate',
@@ -44,16 +57,30 @@ export const getPhysicalActivityFeedback = (
             id: 'physical_activity_low',
             title: item.title,
             message: item.content,
+            patientMessage: item.content,
             type: item.type as FeedbackType,
-            audience: 'both',
+            audience: 'patient',
             priority: 6
         });
+
+        if ((item as any).professionalContent) {
+            feedback.push({
+                id: 'physical_activity_prof',
+                title: `ALERTA CLÍNICO: ${item.title}`,
+                message: (item as any).professionalContent,
+                type: 'clinical',
+                audience: 'professional',
+                priority: 6
+            });
+        }
+
     } else if (isYes) {
         const item = FEEDBACK_CONTENT.physical_activity.positive;
         feedback.push({
             id: 'physical_activity_ok',
             title: item.title,
             message: item.content,
+            patientMessage: item.content,
             type: item.type as FeedbackType,
             audience: 'patient',
             priority: 1
@@ -81,16 +108,29 @@ export const getSubstanceUseFeedback = (response: boolean | null): FeedbackItem[
             id: 'substance_use',
             title: item.title,
             message: item.content,
+            patientMessage: item.content,
             type: item.type as FeedbackType,
-            audience: 'both',
+            audience: 'patient',
             priority: 10
         });
+
+        if ((item as any).professionalContent) {
+            feedback.push({
+                id: 'substance_use_prof',
+                title: `ALERTA CLÍNICO: ${item.title}`,
+                message: (item as any).professionalContent,
+                type: 'clinical',
+                audience: 'professional',
+                priority: 10
+            });
+        }
     } else if (response === false) {
         const item = FEEDBACK_CONTENT.substances.positive;
         feedback.push({
             id: 'substance_use_ok',
             title: item.title,
             message: item.content, // Now using the correct positive method
+            patientMessage: item.content,
             type: item.type as FeedbackType,
             audience: 'patient',
             priority: 1
@@ -109,6 +149,7 @@ export const getCoffeTeaFeedback = (response: boolean | null): FeedbackItem[] =>
             id: 'coffee_tea',
             title: item.title,
             message: item.content,
+            patientMessage: item.content,
             type: item.type as FeedbackType,
             audience: 'patient',
             priority: 4
@@ -119,6 +160,7 @@ export const getCoffeTeaFeedback = (response: boolean | null): FeedbackItem[] =>
             id: 'coffee_tea_none',
             title: item.title,
             message: item.content,
+            patientMessage: item.content,
             type: item.type as FeedbackType,
             audience: 'patient',
             priority: 1

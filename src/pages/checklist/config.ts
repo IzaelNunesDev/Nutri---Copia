@@ -1,4 +1,4 @@
-import { ChecklistItem, PatientData } from './types';
+import type { ChecklistItem, PatientData } from './types';
 
 export const getChecklistItems = (patientData: PatientData): ChecklistItem[] => [
     {
@@ -200,7 +200,12 @@ export const INLINE_FEEDBACK_IDS = new Set([
     'dietary_pattern',      // Item 1 - Dietas especiais
     'anemia_test',          // Item 5 - Exames
     'coffee_tea_consumption', // Item 8 - Café/Chá
-    'fish_consumption'      // Item 2f - Peixe (cruzamento com dieta)
+    'fish_consumption',     // Item 2f - Peixe
+    'fruits_vegetables',
+    'dairy_products',
+    'whole_grains',
+    'meat_poultry_eggs',
+    'plant_proteins'
 ]);
 
 // IDs of fields with inverted color logic (Yes=Bad, No=Good)

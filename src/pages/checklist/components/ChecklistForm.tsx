@@ -10,7 +10,7 @@ import {
   getTrimesterText
 } from '../../../utils/rules';
 import { calculateIMCString } from '../../../utils/nutritionConstants';
-import { PatientData } from '../types';
+import type { PatientData } from '../types';
 import { getChecklistItems, INLINE_FEEDBACK_IDS } from '../config';
 import { ChecklistProgress } from './ChecklistProgress';
 import { ChecklistHeader } from './ChecklistHeader';
@@ -28,12 +28,10 @@ export default function ChecklistForm({ patientData, onPrev }: ChecklistFormProp
   const [showSuccess, setShowSuccess] = useState(false);
   const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
   const [currentBlock, setCurrentBlock] = useState(1);
-  const totalBlocks = 5;
 
   // Rules Engine State
   const [activeAlerts, setActiveAlerts] = useState<FeedbackItem[]>([]);
-  const [professionalAlerts, setProfessionalAlerts] = useState<FeedbackItem[]>([]);
-  const [patientGuidelines, setPatientGuidelines] = useState<FeedbackItem[]>([]);
+
   const [selectedGuidelines, setSelectedGuidelines] = useState<Record<string, { selected: boolean; note: string }>>({});
   const [editedMessages, setEditedMessages] = useState<Record<string, string>>({});
   const [showGuidelinesSidebar, setShowGuidelinesSidebar] = useState(false);
@@ -93,8 +91,7 @@ export default function ChecklistForm({ patientData, onPrev }: ChecklistFormProp
     });
 
     setActiveAlerts(result.allFeedback);
-    setProfessionalAlerts(result.professionalAlerts);
-    setPatientGuidelines(result.patientGuidelines);
+
     setWeightGainRecommendation(result.weightGainRecommendation);
 
     const newSelection = { ...selectedGuidelines };
@@ -161,7 +158,7 @@ export default function ChecklistForm({ patientData, onPrev }: ChecklistFormProp
     activeAlerts.forEach(alert => {
       if (selectedGuidelines[alert.id]?.selected) {
         const note = selectedGuidelines[alert.id]?.note;
-        const message = editedMessages[alert.id] || alert.message;
+        const message = editedMessages[alert.id] || alert.patientMessage || alert.message;
         lines.push(`[${alert.title}] ${message} ${note ? `(Nota: ${note})` : ''}`);
       }
     });
@@ -321,6 +318,7 @@ export default function ChecklistForm({ patientData, onPrev }: ChecklistFormProp
       if (itemId === 'calcium_supplement' && alert.id.includes('calcium')) return true;
       if (itemId === 'anemia_test' && alert.id.includes('anemia')) return true;
       if (itemId === 'substances_use' && alert.id.includes('substance')) return true;
+      if (itemId === 'dietary_pattern' && alert.id.startsWith('diet_')) return true;
       if (itemId === 'coffee_tea_consumption' && alert.id.includes('coffee')) return true;
       return false;
     });
@@ -350,7 +348,8 @@ export default function ChecklistForm({ patientData, onPrev }: ChecklistFormProp
 
   const filteredSidebarAlerts = useMemo(() => {
     return activeAlerts.filter(alert =>
-      !INLINE_FEEDBACK_IDS.has(alert.id.replace(/_alert|_guideline|_positive/g, '')) &&
+      !INLINE_FEEDBACK_IDS.has(alert.id.replace(/_alert|_guideline|_positive|_critical|_ok|_low|_high/g, '')) &&
+      !alert.id.startsWith('diet_') &&
       alert.type !== 'normal'
     );
   }, [activeAlerts]);
