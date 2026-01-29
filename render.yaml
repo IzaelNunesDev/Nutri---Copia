@@ -1,7 +1,7 @@
 services:
   # Frontend Service
   - type: web
-    name: nutri-frontend
+    name: nutri-copia-frontend
     env: static
     buildCommand: npm install && npm run build
     staticPublishPath: ./dist
@@ -16,12 +16,12 @@ services:
       - key: VITE_API_URL
         fromService:
           type: web
-          name: nutri-backend
+          name: nutri-copia-backend
           property: host
 
   # Backend Service
   - type: web
-    name: nutri-backend
+    name: nutri-copia-backend
     env: python
     rootDir: backend
     buildCommand: pip install -r requirements.txt
@@ -31,7 +31,7 @@ services:
       - key: FRONTEND_URL
         fromService:
           type: web
-          name: nutri-frontend
+          name: nutri-copia-frontend
           property: host
       - key: MONGODB_URL
         sync: false
